@@ -6,7 +6,7 @@ const Product = require("../models/Product");
 router.post("/", async (req, res) => {
   try {
     const product = await new Product(req.body).save();
-    res.status(200).json({ message: "เซฟข้อมูลสำเร็จ", product: product });
+    res.status(200).json({ message: "Saved", product: product });
   } catch (error) {
     console.log(error);
     res.status(500).send("Server Error");
@@ -16,7 +16,7 @@ router.post("/", async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     const products = await Product.find();
-    res.status(200).json({ message: "ข้อมูลทั้งหมด", products });
+    res.status(200).json({ message: "Data", products });
   } catch (error) {
     console.log(error);
     res.status(500).send("Server Error");
@@ -27,7 +27,7 @@ router.get("/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const product = await Product.findById(id);
-    res.status(200).json({ message: "เจอข้อมูลแล้ว", product });
+    res.status(200).json({ message: "Your Data", product });
   } catch (error) {
     console.log(error);
     res.status(500).send("Server Error");
