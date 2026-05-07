@@ -1,61 +1,17 @@
 const express = require("express");
 const router = require("express").Router();
+const {
+  listProduct,
+  createProduct,
+  listProductById,
+  updateProduct,
+  deleteProduct,
+} = require("../controllers/product");
 
-const Product = require("../models/Product");
-
-router.post("/", async (req, res) => {
-  try {
-    const product = await new Product(req.body).save();
-    res.status(200).json({ message: "Saved", product: product });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Server Error");
-  }
-});
-
-router.get("/", async (req, res) => {
-  try {
-    const products = await Product.find();
-    res.status(200).json({ message: "Data", products });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Server Error");
-  }
-});
-
-router.get("/:id", async (req, res) => {
-  try {
-    const id = req.params.id;
-    const product = await Product.findById(id);
-    res.status(200).json({ message: "Your Data", product });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Server Error");
-  }
-});
-
-router.put("/:id", async (req, res) => {
-  try {
-    const id = req.params.id;
-    const product = await Product.findByIdAndUpdate(id, req.body, {
-      new: true,
-    });
-    res.status(200).json({ message: "Updated", product });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Server Error");
-  }
-});
-
-router.delete("/:id", async (req, res) => {
-  try {
-    const id = req.params.id;
-    const product = await Product.findByIdAndDelete(id);
-    res.status(200).json({ message: "Deleted", product });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Server Error");
-  }
-});
+router.post("/", createProduct);
+router.get("/", listProduct);
+router.get("/:id", listProductById);
+router.put("/:id", updateProduct);
+router.delete("/:id", deleteProduct);
 
 module.exports = router;
