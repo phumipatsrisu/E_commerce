@@ -9,10 +9,10 @@ const {
 } = require("../controllers/product");
 const { authCheck } = require("../middleware/auth");
 
-router.post("/", createProduct);
-router.get("/", authCheck, listProduct);
+router.post("/", authCheck, createProduct);
+router.get("/", listProduct);
 router.get("/:id", listProductById);
-router.put("/:id", updateProduct);
-router.delete("/:id", deleteProduct);
+router.put("/:id", authCheck, updateProduct);
+router.delete("/:id", authCheck, deleteProduct);
 
 module.exports = router;
