@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 const Login = () => {
   const [form, setForm] = useState({
@@ -20,7 +21,29 @@ const Login = () => {
 
       localStorage.setItem("token", res.data.token);
 
+      const decoded = jwtDecode(res.data.token);
+      console.log("decoded: ", decoded);
+
       alert("Login Successfully");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleTestAPI = async () => {
+    try {
+      const myToken = localStorage.getItem("token");
+      const res = await axios.post(
+        "http://localhost:3000/api/product",
+        { name: "Diamond Sword", price: 5000 },
+        {
+          headers: {
+            authtoken: myToken,
+          },
+        },
+      );
+
+      console.log(res.data);
     } catch (error) {
       console.log(error);
     }
@@ -54,6 +77,13 @@ const Login = () => {
         </div>
 
         <button>Login</button>
+        <button
+          type="button"
+          onClick={handleTestAPI}
+          style={{ marginTop: "20px", backgroundColor: "orange" }}
+        >
+          ลองของ! ยิง API หลังบ้าน
+        </button>
       </form>
     </div>
   );
