@@ -48,6 +48,11 @@ const Login = () => {
       console.log(error);
     }
   };
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    console.log("Logout Success");
+    window.location.reload();
+  };
   return (
     <div>
       <h1>Login</h1>
@@ -85,6 +90,7 @@ const Login = () => {
           ลองของ! ยิง API หลังบ้าน
         </button>
       </form>
+      <button onClick={handleLogout}>Logout</button>
     </div>
   );
 };
