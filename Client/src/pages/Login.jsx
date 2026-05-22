@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [form, setForm] = useState({
     username: "",
     password: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm({
@@ -18,13 +21,19 @@ const Login = () => {
     e.preventDefault();
     try {
       const res = await axios.post("http://localhost:3000/api/login", form);
+      const decoded = jwtDecode(res.data.token);
+      const userRole = decoded.user.role;
 
       localStorage.setItem("token", res.data.token);
-
-      const decoded = jwtDecode(res.data.token);
-      console.log("decoded: ", decoded);
+      localStorage.setItem("role", userRole);
 
       alert("Login Successfully");
+
+      if (userRole === "admin") {
+        navigate("/");
+      } else {
+        navigate("/store");
+      }
     } catch (error) {
       console.log(error);
     }
