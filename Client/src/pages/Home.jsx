@@ -8,6 +8,7 @@ const Home = () => {
   const [detail, setDetail] = useState("");
   const [price, setPrice] = useState("");
   const [editId, setEditId] = useState(null);
+  const token = localStorage.getItem("token");
 
   const loadData = async () => {
     try {
@@ -23,9 +24,47 @@ const Home = () => {
     loadData();
   }, []);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      if (editId) {
+        await axios.put(
+          "http://localhost:3000/api/product/" + editId,
+          {
+            name,
+            detail,
+            price,
+          },
+          { headers: { authtoken: token } },
+        );
+        setEditId(null);
+      } else {
+        await axios.post(
+          "http://localhost:3000/api/product/",
+          {
+            name,
+            detail,
+            price,
+          },
+          { headers: { authtoken: token } },
+        );
+      }
+      alert("Add Data Successfully");
+      loadData();
+      setName("");
+      setDetail("");
+      setPrice("");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleDelete = async (id) => {
     try {
-      await axios.delete("http://localhost:3000/api/product/" + id);
+      await axios.delete("http://localhost:3000/api/product/" + id, {
+        headers: { authtoken: token },
+      });
       loadData();
     } catch (error) {
       console.log(error);
@@ -37,32 +76,6 @@ const Home = () => {
     setDetail(item.detail);
     setPrice(item.price);
     setEditId(item._id);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      if (editId) {
-        await axios.put("http://localhost:3000/api/product/" + editId, {
-          name,
-          detail,
-          price,
-        });
-        setEditId(null);
-      } else {
-        await axios.post("http://localhost:3000/api/product/", {
-          name,
-          detail,
-          price,
-        });
-      }
-      loadData();
-      setName("");
-      setDetail("");
-      setPrice("");
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   return (

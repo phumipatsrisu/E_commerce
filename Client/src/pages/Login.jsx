@@ -32,13 +32,13 @@ const Login = () => {
 
   const handleTestAPI = async () => {
     try {
-      const myToken = localStorage.getItem("token");
+      const Token = localStorage.getItem("token");
       const res = await axios.post(
         "http://localhost:3000/api/product",
         { name: "Diamond Sword", price: 5000 },
         {
           headers: {
-            authtoken: myToken,
+            authtoken: Token,
           },
         },
       );
