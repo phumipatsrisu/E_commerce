@@ -19,6 +19,11 @@ const Store = () => {
     loadData();
   }, []);
 
+  const handleAddToCart = (item) => {
+    console.log("Name:", item.name, "Price:", item.price);
+    alert(`Add ${item.name} Success`);
+  };
+
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-50 to-gray-200 p-6 md:p-12 font-sans">
       <div className="max-w-5xl mx-auto">
@@ -52,11 +57,13 @@ const Store = () => {
                 >
                   Detail
                 </Link>
+                <button onClick={() => handleAddToCart(item)}>
+                  Cart🛒
+                </button>
               </div>
             </div>
           ))}
         </div>
-
       </div>
     </div>
   );
