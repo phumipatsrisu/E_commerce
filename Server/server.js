@@ -12,6 +12,7 @@ app.use(express.json());
 
 app.use("/api/product", productRouter);
 app.use("/api", require("./routes/auth"));
+app.use("/api", require("./routes/cart"));
 
 connectDB();
 app.get("/", (req, res) => res.send("Hello World!"));
