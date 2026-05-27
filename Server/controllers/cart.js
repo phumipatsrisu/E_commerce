@@ -10,23 +10,23 @@ exports.addToCart = async (req, res) => {
     if (!cart) {
       cart = new Cart({
         cartOwner: userId,
-        product: [{ product: productId, amount: 1 }],
+        products: [{ product: productId, amount: 1 }],
       });
       await cart.save();
     } else {
-      const itemIndex = cart.product.findIndex(
+      const itemIndex = cart.products.findIndex(
         (item) => item.product.toString() === productId,    
       );
 
       if (itemIndex > -1) {
-        cart.product[itemIndex].amount += 1;
+        cart.products[itemIndex].amount += 1;
       } else {
-        cart.product.push({ product: productId, amount: 1 });
+        cart.products.push({ product: productId, amount: 1 });
       }
       await cart.save();
     }
     res.status(200).json({ message: "หยิบใส่ตะกร้าเรียบร้อย!", cart });
-  } catch (error) {
+  } catch (error) { 
     console.log(error);
     res.status(500).json({ message: "Server Error" });
   }

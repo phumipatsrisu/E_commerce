@@ -19,9 +19,21 @@ const Store = () => {
     loadData();
   }, []);
 
-  const handleAddToCart = (item) => {
-    console.log("Name:", item.name, "Price:", item.price);
-    alert(`Add ${item.name} Success`);
+  const handleAddToCart = async (item) => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.post(
+        "http://localhost:3000/api/cart",
+        { productId: item._id },
+        {
+          headers: { authtoken: token },
+        },
+      );
+      console.log("Name:", item.name, "Price:", item.price);
+      alert(`Add ${item.name} Success`);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -57,9 +69,7 @@ const Store = () => {
                 >
                   Detail
                 </Link>
-                <button onClick={() => handleAddToCart(item)}>
-                  Cart🛒
-                </button>
+                <button onClick={() => handleAddToCart(item)}>Cart🛒</button>
               </div>
             </div>
           ))}
