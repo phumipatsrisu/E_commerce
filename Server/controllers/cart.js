@@ -15,7 +15,7 @@ exports.addToCart = async (req, res) => {
       await cart.save();
     } else {
       const itemIndex = cart.products.findIndex(
-        (item) => item.product.toString() === productId,    
+        (item) => item.product.toString() === productId,
       );
 
       if (itemIndex > -1) {
@@ -26,7 +26,20 @@ exports.addToCart = async (req, res) => {
       await cart.save();
     }
     res.status(200).json({ message: "หยิบใส่ตะกร้าเรียบร้อย!", cart });
-  } catch (error) { 
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+exports.getCart = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    let cart = await Cart.findOne({ cartOwner: userId }).populate(
+      "products.product",
+    );
+    res.status(200).json({ message: "ตะกร้าของคุณ:", cart });
+  } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Server Error" });
   }
