@@ -5,6 +5,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Store from "./pages/Store";
 import AdminRoute from "./components/AdminRoute";
+import Cart from "./components/Cart";
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/store" element={<Store />} />
+        <Route path="/cart" element={<Cart />} />
       </Routes>
     </div>
   );
