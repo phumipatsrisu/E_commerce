@@ -61,11 +61,10 @@ exports.removeFromCart = async (req, res) => {
 
     if (cart.products[itemIndex].amount > 1) {
       cart.products[itemIndex].amount -= 1;
-    } else if (cart.products[itemIndex].amount == 1) {
-      cart.products.splice(itemIndex, 1);
     } else {
-      res.json({ message: "ไม่พบสินค้าดังกล่าวในตะกร้า" });
+      cart.products.splice(itemIndex, 1);
     }
+
     await cart.save();
     res.json({ message: "ลบสินค้าเรียบร้อย", cart });
   } catch (error) {
