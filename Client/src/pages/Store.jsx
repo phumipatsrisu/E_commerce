@@ -43,6 +43,9 @@ const Store = () => {
         <h1 className="text-4xl md:text-5xl font-extrabold text-center mb-10 text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-indigo-600 drop-shadow-sm transition-all duration-500 hover:scale-105">
           MERN Store
         </h1>
+        <Link to={"/cart"} className="bg-red-100">
+          My Cart
+        </Link>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {products.map((item) => (
