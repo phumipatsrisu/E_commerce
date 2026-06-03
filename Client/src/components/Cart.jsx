@@ -40,6 +40,13 @@ const Cart = () => {
     });
     loadCart();
   };
+
+  const handleClearCart = async () => {
+    await axios.delete("http://localhost:3000/api/cart/clear", {
+      headers: { authtoken: token },
+    });
+    loadCart();
+  };
   return (
     <div>
       <h1 className="text-gray-800 bg-blue-200 text-2xl text-center">
@@ -73,6 +80,12 @@ const Cart = () => {
             <p>Total: {item.product.price * item.amount}</p>
           </div>
         ))}
+      <button
+        onClick={handleClearCart}
+        className="bg-red-500 text-white p-2 rounded mt-4"
+      >
+        Clear Cart
+      </button>
     </div>
   );
 };
