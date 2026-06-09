@@ -18,11 +18,11 @@ const orderSchema = new mongoose.Schema(
         },
       },
     ],
-    CartTotal: {
+    cartTotal: {
       type: Number,
     },
 
-    OrderStatus: {
+    orderStatus: {
       type: String,
       default: "Pending",
     },
