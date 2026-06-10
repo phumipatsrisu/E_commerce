@@ -38,11 +38,11 @@ exports.saveOrder = async (req, res) => {
 exports.getUserOrder = async (req, res) => {
   try {
     const userId = req.user.id;
-    let cart = await Cart.find({ cartOwner: userId }).populate(
+    let order = await Order.find({ cartOrder: userId }).populate(
       "products.product",
     );
 
-    res.json({ orders: cart });
+    res.json({ orders: order });
   } catch (error) {
     console.log(error);
     res.status(500).send("Server Error");
