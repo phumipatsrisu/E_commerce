@@ -34,3 +34,17 @@ exports.saveOrder = async (req, res) => {
     res.status(500).send("Server Error");
   }
 };
+
+exports.getUserOrder = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    let cart = await Cart.find({ cartOwner: userId }).populate(
+      "products.product",
+    );
+
+    res.json({ orders: cart });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Server Error");
+  }
+};
