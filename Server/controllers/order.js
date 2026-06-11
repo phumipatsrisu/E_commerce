@@ -51,13 +51,18 @@ exports.getUserOrder = async (req, res) => {
 
 exports.getSingleOrder = async (req, res) => {
   try {
+    // 1. ดึง 'รหัสบิล' จาก URL และ 'รหัสลูกค้า' จากคนที่กำลังล็อกอิน
     const { orderId } = req.params;
     const userId = req.user.id;
 
+    // 2. ค้นหาบิลตามรหัส พร้อมกับใช้ populate สั่งดึงข้อมูลสินค้า (เช่น ชื่อ, ราคา) มาด้วย
     let order = await Order.findById(orderId).populate("products.product");
 
+    // 3. ถ้า "หาบิลไม่เจอ" หรือ "บิลนี้ไม่ใช่ของคนที่กำลังล็อกอิน" ให้เตะออก
     if (!order || order.cartOrder.toString() !== userId) {
-      return res.status(404).json({ message: "ไม่พบใบสั่งซื้อนี้" });
+      return res
+        .status(404)
+        .json({ message: "ไม่พบใบสั่งซื้อนี้" });
     }
     res.json({ orders: order });
   } catch (error) {
