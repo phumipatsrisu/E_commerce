@@ -32,6 +32,7 @@ exports.addToCart = async (req, res) => {
   }
 };
 
+
 exports.getCart = async (req, res) => {
   try {
     const userId = req.user.id;
