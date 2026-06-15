@@ -2,8 +2,41 @@ const Product = require("../models/Product");
 
 exports.listProduct = async (req, res) => {
   try {
-    const products = await Product.find();
-    res.status(200).json({ message: "Data", products });
+    const {
+      search = "",
+      page = 1,
+      limit = 6,
+      sort = "createdAt",
+      order = "desc",
+    } = req.query;
+
+    const pageNumber = parseInt(page);
+    const limitNumber = parseInt(limit);
+
+    const skip = (pageNumber - 1) * limitNumber;
+
+    const query = {
+      name: { $regex: search, $options: "i" },
+    };
+
+    const products = await Product.find(query)
+      .sort({
+        [sort]: order === "desc" ? -1 : 1,
+      })
+      .skip(skip)
+      .limit(limitNumber);
+
+    const total = await Product.countDocuments(query);
+
+    res
+      .status(200)
+      .json({
+        message: "Data",
+        products,
+        total,
+        currentPage: pageNumber,
+        totalPage: Math.ceil(total / limitNumber),
+      });
   } catch (error) {
     console.log(error);
     res.status(500).send("Server Error");
