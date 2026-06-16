@@ -4,11 +4,17 @@ import { Link } from "react-router-dom";
 
 const Store = () => {
   const [products, setProducts] = useState([]);
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
 
   const loadData = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/product");
+      const res = await axios.get(
+        `http://localhost:3000/api/product?search=${search}&page=${page}&limit=6`,
+      );
       setProducts(res.data.products);
+      setTotalPage(res.data.totalPage);
     } catch (error) {
       console.log(error);
     }
@@ -17,7 +23,7 @@ const Store = () => {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     loadData();
-  }, []);
+  }, [page]);
 
   const handleAddToCart = async (item) => {
     try {
@@ -36,6 +42,11 @@ const Store = () => {
     }
   };
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setPage(1);
+    loadData();
+  };
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-50 to-gray-200 p-6 md:p-12 font-sans">
       <div className="max-w-5xl mx-auto">
@@ -46,6 +57,22 @@ const Store = () => {
         <Link to={"/cart"} className="bg-red-100">
           My Cart
         </Link>
+
+        <form onSubmit={handleSearch} className="flex gap-2 my-6">
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="ค้นหาสินค้า (เช่น หมู, กุ้ง)..."
+            className="border-2 border-gray-300 px-4 py-2 rounded-lg w-full max-w-md focus:border-blue-500 focus:outline-none"
+          />
+          <button
+            type="submit"
+            className="bg-blue-600 text-white font-bold px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+          >
+            ค้นหา
+          </button>
+        </form>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {products.map((item) => (
